@@ -25,9 +25,10 @@ export class CoffeesService {
   }
 
   update(id: string, updateCoffeeDto: any) {
+    console.dir(updateCoffeeDto);
     const existingCoffee = this.findOne(id);
     if (existingCoffee) {
-      // update the existing entity
+      Object.assign(existingCoffee, updateCoffeeDto);
     }
   }
 
