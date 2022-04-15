@@ -32,7 +32,6 @@ class CoffeeBrandsFactory {
       useFactory: async (brandsFactory: CoffeeBrandsFactory) =>
         await Promise.resolve(brandsFactory.create()),
       inject: [CoffeeBrandsFactory],
-      scope: Scope.REQUEST,
     },
     {
       provide: ConfigService,

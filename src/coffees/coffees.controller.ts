@@ -5,6 +5,7 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Inject,
   NotFoundException,
   Param,
   Patch,
@@ -16,10 +17,17 @@ import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { UpdateCoffeeDto } from 'src/coffees/dto/update-coffee.dto';
 
 import { CoffeesService } from './coffees.service';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 
 @Controller('coffees')
 export class CoffeesController {
-  constructor(private readonly coffeeService: CoffeesService) {}
+  constructor(
+    private readonly coffeeService: CoffeesService,
+    @Inject(REQUEST) private readonly request: Request,
+  ) {
+    console.log('CoffeesController instantiated', this.request.body);
+  }
 
   @Get()
   findAll(@Query() pagination: PaginationQueryDto) {

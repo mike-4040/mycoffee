@@ -9,7 +9,7 @@ import { Flavor } from './entities/flavor.entity';
 import { Event } from 'src/events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
 
-@Injectable({ scope: Scope.DEFAULT })
+@Injectable({ scope: Scope.REQUEST })
 export class CoffeesService {
   private readonly findOptions: FindManyOptions<Coffee> = {
     relations: ['flavors'],
