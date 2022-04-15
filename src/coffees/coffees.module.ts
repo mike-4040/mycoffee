@@ -6,13 +6,8 @@ import { Coffee } from './entities/coffees.entity';
 import { Flavor } from './entities/flavor.entity';
 import { Event } from '../events/entities/event.entity';
 import { COFFEE_BRANDS } from './coffees.constants';
-
-class ConfigService {}
-class DevConfigService {}
-class ProdConfigService {}
-
-const ConfigServiceClass =
-  process.env.NODE_ENV === 'dev' ? DevConfigService : ProdConfigService;
+import { ConfigModule } from '@nestjs/config';
+import coffeesConfig from './config/coffees.config';
 
 @Injectable()
 class CoffeeBrandsFactory {
@@ -22,7 +17,10 @@ class CoffeeBrandsFactory {
 }
 @Module({
   exports: [CoffeesService],
-  imports: [TypeOrmModule.forFeature([Coffee, Flavor, Event])],
+  imports: [
+    TypeOrmModule.forFeature([Coffee, Flavor, Event]),
+    ConfigModule.forFeature(coffeesConfig),
+  ],
   controllers: [CoffeesController],
   providers: [
     CoffeesService,
@@ -32,10 +30,6 @@ class CoffeeBrandsFactory {
       useFactory: async (brandsFactory: CoffeeBrandsFactory) =>
         await Promise.resolve(brandsFactory.create()),
       inject: [CoffeeBrandsFactory],
-    },
-    {
-      provide: ConfigService,
-      useClass: ConfigServiceClass,
     },
   ],
 })
