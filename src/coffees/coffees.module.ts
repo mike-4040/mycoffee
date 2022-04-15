@@ -1,4 +1,4 @@
-import { Injectable, Module } from '@nestjs/common';
+import { Injectable, Module, Scope } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CoffeesController } from './coffees.controller';
 import { CoffeesService } from './coffees.service';
@@ -32,6 +32,7 @@ class CoffeeBrandsFactory {
       useFactory: async (brandsFactory: CoffeeBrandsFactory) =>
         await Promise.resolve(brandsFactory.create()),
       inject: [CoffeeBrandsFactory],
+      scope: Scope.REQUEST,
     },
     {
       provide: ConfigService,
