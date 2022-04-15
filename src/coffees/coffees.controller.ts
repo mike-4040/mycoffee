@@ -12,8 +12,9 @@ import {
   Query,
 } from '@nestjs/common';
 import { CreateCoffeeDto } from 'src/coffees/dto/create-coffee.dto';
-import { UpdateCoffeeDto } from 'src/coffees/dto/update-coffee.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { UpdateCoffeeDto } from 'src/coffees/dto/update-coffee.dto';
+
 import { CoffeesService } from './coffees.service';
 
 @Controller('coffees')
