@@ -29,8 +29,8 @@ class CoffeeBrandsFactory {
     CoffeeBrandsFactory,
     {
       provide: COFFEE_BRANDS,
-      useFactory: (brandsFactory: CoffeeBrandsFactory) =>
-        brandsFactory.create(),
+      useFactory: async (brandsFactory: CoffeeBrandsFactory) =>
+        await Promise.resolve(brandsFactory.create()),
       inject: [CoffeeBrandsFactory],
     },
     {
