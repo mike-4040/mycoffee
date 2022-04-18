@@ -20,6 +20,7 @@ import { CoffeesService } from './coffees.service';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
+import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
 
 @UsePipes(ValidationPipe)
 @Controller('coffees')
@@ -38,8 +39,8 @@ export class CoffeesController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    await new Promise(resolve => setTimeout(resolve, 5000));
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    console.log(id, typeof id);
     const coffee = this.coffeeService.findOne(id.toString());
     if (!coffee) {
       throw new NotFoundException('not found');
