@@ -3,14 +3,14 @@ import {
   Controller,
   Delete,
   Get,
-  HttpCode,
-  HttpStatus,
   Inject,
   NotFoundException,
   Param,
   Patch,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateCoffeeDto } from 'src/coffees/dto/create-coffee.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
@@ -20,6 +20,7 @@ import { CoffeesService } from './coffees.service';
 import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 
+@UsePipes(ValidationPipe)
 @Controller('coffees')
 export class CoffeesController {
   constructor(
@@ -49,7 +50,10 @@ export class CoffeesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+  update(
+    @Param('id') id: string,
+    @Body(ValidationPipe) updateCoffeeDto: UpdateCoffeeDto,
+  ) {
     return this.coffeeService.update(id, updateCoffeeDto);
   }
 
