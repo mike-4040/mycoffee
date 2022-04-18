@@ -38,7 +38,8 @@ export class CoffeesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  async findOne(@Param('id') id: number) {
+    await new Promise(resolve => setTimeout(resolve, 5000));
     const coffee = this.coffeeService.findOne(id.toString());
     if (!coffee) {
       throw new NotFoundException('not found');
