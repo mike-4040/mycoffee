@@ -21,6 +21,7 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
 import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
+import { Protocol } from 'src/common/decorators/protocol.decorator';
 
 @UsePipes(ValidationPipe)
 @Controller('coffees')
@@ -34,7 +35,11 @@ export class CoffeesController {
 
   @Public()
   @Get()
-  findAll(@Query() pagination: PaginationQueryDto) {
+  findAll(
+    @Protocol(99) protocol: string,
+    @Query() pagination: PaginationQueryDto,
+  ) {
+    console.log(protocol);
     return this.coffeeService.findAll(pagination);
   }
 
