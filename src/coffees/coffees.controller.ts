@@ -22,7 +22,9 @@ import { Request } from 'express';
 import { Public } from 'src/common/decorators/public.decorator';
 import { ParseIntPipe } from 'src/common/pipes/parse-int.pipe';
 import { Protocol } from 'src/common/decorators/protocol.decorator';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('cofffees')
 @UsePipes(ValidationPipe)
 @Controller('coffees')
 export class CoffeesController {
@@ -33,6 +35,7 @@ export class CoffeesController {
     console.log('CoffeesController instantiated', this.request.body);
   }
 
+  @ApiForbiddenResponse({ description: 'What you are doing here' })
   @Public()
   @Get()
   findAll(
