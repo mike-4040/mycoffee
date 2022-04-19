@@ -11,8 +11,8 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { CreateCoffeeDto } from 'src/coffes/dto/create-coffee.dto';
-import { UpdateCoffeeDto } from 'src/coffes/dto/update-coffee.dto';
+import { CreateCoffeeDto } from 'src/coffees/dto/create-coffee.dto';
+import { UpdateCoffeeDto } from 'src/coffees/dto/update-coffee.dto';
 import { CoffeesService } from './coffees.service';
 
 @Controller('coffees')
