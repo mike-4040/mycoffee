@@ -8,14 +8,14 @@ import { Flavor } from './entities/flavor.entity';
 import { NotFoundException } from '@nestjs/common';
 
 type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
-const createMockRepository = <T = any>(): MockRepository<T> => ({
+
+const mockRepository: MockRepository = {
   findOne: jest.fn(),
   create: jest.fn(),
-});
+};
 
 describe('CoffeesService', () => {
   let service: CoffeesService;
-  let coffeeRepository: MockRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -24,17 +24,16 @@ describe('CoffeesService', () => {
         { provide: Connection, useValue: {} },
         {
           provide: getRepositoryToken(Flavor),
-          useValue: createMockRepository(),
+          useValue: mockRepository,
         },
         {
           provide: getRepositoryToken(Coffee),
-          useValue: createMockRepository(),
+          useValue: mockRepository,
         },
       ],
     }).compile();
 
     service = module.get<CoffeesService>(CoffeesService);
-    coffeeRepository = module.get<MockRepository>(getRepositoryToken(Coffee));
   });
 
   it('should be defined', () => {
@@ -47,7 +46,7 @@ describe('CoffeesService', () => {
         const coffeId = '1';
         const expectedCoffee = {};
 
-        coffeeRepository.findOne.mockResolvedValue(expectedCoffee);
+        mockRepository.findOne.mockResolvedValue(expectedCoffee);
 
         const coffee = await service.findOne(coffeId);
         expect(coffee).toEqual(expectedCoffee);
@@ -58,7 +57,20 @@ describe('CoffeesService', () => {
       it('should throw exaptions', async () => {
         const coffeId = '1';
 
-        coffeeRepository.findOne.mockResolvedValue(undefined);
+        mockRepository.findOne.mockResolvedValue(undefined);
+
+        expect.assertions(4);
+
+        await expect(service.findOne(coffeId)).rejects.toMatchInlineSnapshot(
+          `[NotFoundException: Coffee #1 not found]`,
+        );
+
+        service
+          .findOne(coffeId)
+          .catch(err =>
+            expect(err.message).toMatchInlineSnapshot(`"Coffee #1 not found"`),
+          );
+
         try {
           await service.findOne(coffeId);
         } catch (err) {
