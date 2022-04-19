@@ -12,7 +12,10 @@ export class ApiKeyGuard implements CanActivate {
   ) {}
 
   canActivate(context: ExecutionContext): boolean {
+    // return true;
     const isPublic = this.reflector.get(IS_PUBLIC_KEY, context.getHandler());
+
+    console.log({ isPublic });
     if (isPublic) {
       return true;
     }
